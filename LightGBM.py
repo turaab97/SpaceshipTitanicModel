@@ -1,6 +1,44 @@
 #accuracy of 0.80500
 
+#Clean & fill
 
+# Clean & fill
+#   - Missing planet/destination → “Unknown”
+#   - CryoSleep/VIP blanks → treated as False
+#   - Extract your title (Mr/Ms/Dr) and split the cabin string into deck, number, side
+#   - Zero-fill all spending columns
+#
+# Cook up features
+#   - Total spend + ratios per service
+#   - Quartile bucket of spend
+#   - Family groups (size, “is alone?”) and group-level stats (max/min/std of age & spend)
+#   - Interactions: Age×Spend, VIP×CryoSleep, even/odd cabin number, missing-data counts, etc.
+#
+# Drop leaky features
+#   - Train a quick classifier to tell train vs test rows apart
+#   - Yank out the top handful of features that shift most between train and test
+#
+# Encode cats
+#   - One-hot encode low-cardinality categories (HomePlanet, Destination, etc.)
+#   - K-fold target-encode high-card fields (Title, Deck, Route) inside each CV fold to avoid peeking
+#
+# Scale numbers
+#   - Standardize all numeric columns (zero mean, unit variance)
+#
+# Fit six different models
+#   - scikit-learn’s HistGradientBoosting
+#   - A simple MLP neural net
+#   - LightGBM, CatBoost, XGBoost
+#   - ExtraTrees
+#   (5-fold “StratifiedGroup” split so families never leak)
+#
+# Stack ’em
+#   - Collect each base model’s out-of-fold probabilities into a new tiny dataset
+#   - Train a LightGBM meta-model on that to learn how to blend them
+#
+# Fine-tune the finish
+#   - Scan thresholds (0.3–0.7) to pick the best cut-off for “yes/no”
+#   - Grid-search simple weights (that sum to 1) to optimally blend the six base model probs
 
 import pandas as pd
 import numpy as np
