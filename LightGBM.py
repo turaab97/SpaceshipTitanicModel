@@ -32,7 +32,7 @@
 #   - ExtraTrees
 #   (5-fold “StratifiedGroup” split so families never leak)
 #
-# Stack ’em
+# Stack them
 #   - Collect each base model’s out-of-fold probabilities into a new tiny dataset
 #   - Train a LightGBM meta-model on that to learn how to blend them
 #
