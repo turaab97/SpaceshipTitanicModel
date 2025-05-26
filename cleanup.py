@@ -1,5 +1,9 @@
 # cleanup.py
-
+'''-	Drop Name and raw cabin. Name is just an identifier, every passenger is unique- so it carries zero predictive power.  Raw cabin has some useless strings, which in my opinion would be useless for a model to do any prediction.  
+-	HomePlaent, Desitnation, CrytoSleep, VIP  have null fields.   Change to Booleans instead for consistency (true and false) 
+-	Split Cabin into deck, cabinNum and side (Feature extraction the deck letter (A, B, C… or “Unknown”) might correlate with “deck-level amenities” or even evacuation priority. Cabin side (S vs P) could have patterns too. Breaking it out gives the model actual axes to learn on instead of one indecipherable token).  
+-	Median for spending and age, fill in missing flags.  Why median? It’s robust to outliers and keeps your distribution intact if you’ve got wild high‐rollers spending thousands. Why missing flags? The fact that a passenger didn’t buy anything (or didn’t report age) can itself be predictive—so we 1) fill in a reasonable default and 2) tack on a binary flag like RoomService_missing so the model knows “hey, this was originally unknown.”
+'''
 import os
 import pandas as pd
 
