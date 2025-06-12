@@ -206,7 +206,7 @@ def seed_averaging_ensemble():
     # Convert to numpy arrays
     all_probabilities = np.array(all_probabilities)
     all_predictions = np.array(all_predictions)
-    
+    np.save('all_predictions.npy', all_predictions)
     # Method 1: Average probabilities
     avg_probabilities = all_probabilities.mean(axis=0)
     avg_predictions = (avg_probabilities >= 0.5).astype(bool)
